@@ -71,5 +71,11 @@ dependencies {
     implementation(libs.ktor.client.core)
     implementation(libs.ktor.client.okhttp)
     implementation(libs.ktor.client.content.negociation)
+    implementation(libs.ktor.client.auth)
+    implementation(libs.ktor.client.loggin)
     implementation(libs.ktor.serialization.json)
+
+    // DataStore
+    implementation(libs.androidx.datastore.core)
+    implementation(libs.androidx.datastore.preferences)
 }

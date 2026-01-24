@@ -63,14 +63,10 @@ internal class KtorAuthApiService(
     }
 
     override suspend fun signOut() {
-        runCatching {
-            httpClient.delete {
-                url {
-                    appendPathSegments(V1_AUTH_PATH, "signout")
-                }
+        httpClient.delete {
+            url {
+                appendPathSegments(V1_AUTH_PATH, "signout")
             }
-        }.onFailure {
-            Log.d("AUTH_API_SERVICE", "Failed to signing-out", it)
         }
         clearCachedClientTokens()
     }

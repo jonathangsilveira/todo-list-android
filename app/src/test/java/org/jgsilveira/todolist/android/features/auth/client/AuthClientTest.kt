@@ -1,4 +1,4 @@
-package org.jgsilveira.todolist.android.features.auth.service
+package org.jgsilveira.todolist.android.features.auth.client
 
 import io.ktor.client.plugins.ClientRequestException
 import io.ktor.http.HttpStatusCode

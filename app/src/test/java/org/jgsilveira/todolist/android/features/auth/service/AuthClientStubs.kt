@@ -5,7 +5,6 @@ import io.ktor.client.engine.HttpClientEngine
 import io.ktor.client.engine.mock.MockEngine
 import io.ktor.client.engine.mock.respond
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
-import io.ktor.client.request.request
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.headersOf
@@ -14,7 +13,7 @@ import kotlinx.serialization.json.Json
 
 private const val APPLICATION_JSON = "application/json"
 
-internal object AuthApiServiceStubs {
+internal object AuthClientStubs {
 
     val successResponseSignUpEngine = MockEngine {
         respond(

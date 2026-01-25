@@ -1,6 +1,5 @@
 package org.jgsilveira.todolist.android.features.auth.data.service
 
-import android.util.Log
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.plugins.auth.authProviders
@@ -17,15 +16,15 @@ import org.jgsilveira.todolist.android.features.auth.domain.model.SignUpForm
 
 private const val V1_AUTH_PATH = "/auth/v1"
 
-internal interface AuthApiService {
+internal interface AuthClient {
     suspend fun signUp(form: SignUpForm)
     suspend fun signIn(form: SignInForm): AuthTokens
     suspend fun signOut()
 }
 
-internal class KtorAuthApiService(
+internal class KtorAuthClient(
     private val httpClient: HttpClient
-) : AuthApiService {
+) : AuthClient {
 
     override suspend fun signUp(form: SignUpForm) {
         httpClient.submitForm(

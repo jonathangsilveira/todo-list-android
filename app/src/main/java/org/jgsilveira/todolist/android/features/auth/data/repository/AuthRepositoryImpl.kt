@@ -1,27 +1,27 @@
 package org.jgsilveira.todolist.android.features.auth.data.repository
 
 import org.jgsilveira.todolist.android.features.auth.data.provider.AuthTokensStore
-import org.jgsilveira.todolist.android.features.auth.data.service.AuthApiService
+import org.jgsilveira.todolist.android.features.auth.data.service.AuthClient
 import org.jgsilveira.todolist.android.features.auth.domain.model.SignInForm
 import org.jgsilveira.todolist.android.features.auth.domain.model.SignUpForm
 import org.jgsilveira.todolist.android.features.auth.domain.repository.AuthRepository
 
 internal class AuthRepositoryImpl(
     private val authTokensStore: AuthTokensStore,
-    private val apiService: AuthApiService
+    private val authClient: AuthClient
 ) : AuthRepository {
 
     override suspend fun signUp(form: SignUpForm) {
-        apiService.signUp(form)
+        authClient.signUp(form)
     }
 
     override suspend fun signIn(form: SignInForm) {
-        val authTokens = apiService.signIn(form)
+        val authTokens = authClient.signIn(form)
         authTokensStore.storeAuthTokens(authTokens)
     }
 
     override suspend fun signOut() {
-        apiService.signOut()
+        authClient.signOut()
         authTokensStore.clearAuthTokens()
     }
 }

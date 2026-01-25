@@ -1,7 +1,7 @@
 package org.jgsilveira.todolist.android.features.auth.data.repository
 
 import org.jgsilveira.todolist.android.features.auth.data.provider.AuthTokensStore
-import org.jgsilveira.todolist.android.features.auth.data.service.AuthClient
+import org.jgsilveira.todolist.android.features.auth.data.client.AuthClient
 import org.jgsilveira.todolist.android.features.auth.domain.model.SignInForm
 import org.jgsilveira.todolist.android.features.auth.domain.model.SignUpForm
 import org.jgsilveira.todolist.android.features.auth.domain.repository.AuthRepository

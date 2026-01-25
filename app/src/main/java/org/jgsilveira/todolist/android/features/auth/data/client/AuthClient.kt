@@ -1,4 +1,4 @@
-package org.jgsilveira.todolist.android.features.auth.data.service
+package org.jgsilveira.todolist.android.features.auth.data.client
 
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body

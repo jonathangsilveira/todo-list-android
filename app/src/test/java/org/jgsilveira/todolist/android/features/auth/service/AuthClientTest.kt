@@ -9,10 +9,14 @@ import kotlinx.coroutines.test.TestCoroutineScheduler
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
+import org.jgsilveira.todolist.android.features.auth.data.model.AuthTokenResponse
+import org.jgsilveira.todolist.android.features.auth.data.model.MessageResponse
 import org.jgsilveira.todolist.android.features.auth.data.model.TokenType
 import org.jgsilveira.todolist.android.features.auth.data.service.KtorAuthClient
 import org.jgsilveira.todolist.android.features.auth.domain.model.SignInForm
 import org.jgsilveira.todolist.android.features.auth.domain.model.SignUpForm
+import org.jgsilveira.todolist.android.ktor.mock.mockEngineRespondingJson
+import org.jgsilveira.todolist.android.ktor.mock.mockEngineRespondingSuccessJson
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -38,9 +42,13 @@ internal class AuthClientTest {
     @Test
     fun signUpShouldReturnOKWhenFormIsCorrect() = runTest {
         // Given
-        val engine = AuthClientStubs.successResponseSignUpEngine
-        val httpClient = AuthClientStubs.createKtorClient(engine)
-        val apiService = KtorAuthClient(httpClient)
+        val engine = mockEngineRespondingSuccessJson(
+            content = MessageResponse(message = "User created!"),
+            json = AuthClientStubs.json
+        )
+        val authClient = KtorAuthClient(
+            httpClient = AuthClientStubs.createHttpClient(engine)
+        )
         val form = SignUpForm(
             fullName = "Chablau",
             email = "chablau@chablau.com",
@@ -48,15 +56,20 @@ internal class AuthClientTest {
         )
 
         // When
-        apiService.signUp(form)
+        authClient.signUp(form)
     }
 
     @Test
     fun signUpShouldReturnConflictWhenEmailAlreadyExists() = runTest {
         // Given
-        val engine = AuthClientStubs.conflictResponseSignUpEngine
-        val httpClient = AuthClientStubs.createKtorClient(engine)
-        val apiService = KtorAuthClient(httpClient)
+        val engine = mockEngineRespondingJson(
+            status = HttpStatusCode.Conflict,
+            content = MessageResponse(message = "User already exists!"),
+            json = AuthClientStubs.json
+        )
+        val authClient = KtorAuthClient(
+            httpClient = AuthClientStubs.createHttpClient(engine)
+        )
         val form = SignUpForm(
             fullName = "Chablau",
             email = "chablau@chablau.com",
@@ -65,7 +78,7 @@ internal class AuthClientTest {
 
         // When
         val exception = assertFailsWith(ClientRequestException::class) {
-            apiService.signUp(form)
+            authClient.signUp(form)
         }
 
         // Then
@@ -75,16 +88,25 @@ internal class AuthClientTest {
     @Test
     fun signInShouldReturnOKWhenFormIsCorrect() = runTest {
         // Given
-        val engine = AuthClientStubs.successResponseSignInEngine
-        val httpClient = AuthClientStubs.createKtorClient(engine)
-        val apiService = KtorAuthClient(httpClient)
+        val engine = mockEngineRespondingSuccessJson(
+            json = AuthClientStubs.json,
+            content = AuthTokenResponse(
+                accessToken = "token",
+                refreshToken = "token",
+                expiresAt = 0L,
+                type = "Bearer"
+            )
+        )
+        val authClient = KtorAuthClient(
+            httpClient = AuthClientStubs.createHttpClient(engine)
+        )
         val form = SignInForm(
             username = "chablau@chablau.com",
             password = "chablau"
         )
 
         // When
-        val authTokens = apiService.signIn(form)
+        val authTokens = authClient.signIn(form)
 
         // Then
         assertEquals(expected = "token", actual = authTokens.refreshToken)
@@ -96,9 +118,14 @@ internal class AuthClientTest {
     @Test
     fun signUpShouldReturnNotFoundWhenUserDoesntExist() = runTest {
         // Given
-        val engine = AuthClientStubs.notFoundResponseSignInEngine
-        val httpClient = AuthClientStubs.createKtorClient(engine)
-        val apiService = KtorAuthClient(httpClient)
+        val engine = mockEngineRespondingJson(
+            json = AuthClientStubs.json,
+            status = HttpStatusCode.NotFound,
+            content = MessageResponse(message = "User not found.")
+        )
+        val authClient = KtorAuthClient(
+            httpClient = AuthClientStubs.createHttpClient(engine)
+        )
         val form = SignInForm(
             username = "chablau@chablau.com",
             password = "chablau"
@@ -106,7 +133,7 @@ internal class AuthClientTest {
 
         // When
         val exception = assertFailsWith(ClientRequestException::class) {
-            apiService.signIn(form)
+            authClient.signIn(form)
         }
 
         // Then
@@ -116,12 +143,17 @@ internal class AuthClientTest {
     @Test
     fun signOutShouldReturnNoContentWhenAccessTokenIsValid() = runTest {
         // Given
-        val engine = AuthClientStubs.noContentResponseSignOutEngine
-        val httpClient = AuthClientStubs.createKtorClient(engine)
-        val apiService = KtorAuthClient(httpClient)
+        val engine = mockEngineRespondingJson(
+            json = AuthClientStubs.json,
+            status = HttpStatusCode.NoContent,
+            content = ""
+        )
+        val authClient = KtorAuthClient(
+            httpClient = AuthClientStubs.createHttpClient(engine)
+        )
 
         // When
-        apiService.signOut()
+        authClient.signOut()
 
         // Then
     }
@@ -129,13 +161,18 @@ internal class AuthClientTest {
     @Test
     fun signOutShouldReturnUnauthorizedWhenAccessTokenIsExpired() = runTest {
         // Given
-        val engine = AuthClientStubs.unauthorizedResponseSignOutEngine
-        val httpClient = AuthClientStubs.createKtorClient(engine)
-        val apiService = KtorAuthClient(httpClient)
+        val engine = mockEngineRespondingJson(
+            json = AuthClientStubs.json,
+            status = HttpStatusCode.Unauthorized,
+            content = MessageResponse(message = "Token expired")
+        )
+        val authClient = KtorAuthClient(
+            httpClient = AuthClientStubs.createHttpClient(engine)
+        )
 
         // When
         val exception = assertFailsWith(ClientRequestException::class) {
-            apiService.signOut()
+            authClient.signOut()
         }
 
         // Then

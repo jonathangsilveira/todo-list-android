@@ -9,8 +9,8 @@ import io.ktor.client.request.forms.submitForm
 import io.ktor.http.appendPathSegments
 import io.ktor.http.parameters
 import org.jgsilveira.todolist.android.features.auth.data.model.AuthTokenResponse
-import org.jgsilveira.todolist.android.features.auth.data.model.AuthTokens
-import org.jgsilveira.todolist.android.features.auth.data.model.TokenType
+import org.jgsilveira.todolist.android.features.auth.domain.model.AuthTokens
+import org.jgsilveira.todolist.android.features.auth.domain.model.TokenType
 import org.jgsilveira.todolist.android.features.auth.domain.model.SignInForm
 import org.jgsilveira.todolist.android.features.auth.domain.model.SignUpForm
 

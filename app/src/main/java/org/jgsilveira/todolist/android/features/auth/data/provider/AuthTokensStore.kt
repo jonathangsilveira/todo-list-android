@@ -3,8 +3,8 @@ package org.jgsilveira.todolist.android.features.auth.data.provider
 import org.jgsilveira.todolist.android.core.keystore.KeyValueStore
 import org.jgsilveira.todolist.android.core.keystore.get
 import org.jgsilveira.todolist.android.core.keystore.put
-import org.jgsilveira.todolist.android.features.auth.data.model.AuthTokens
-import org.jgsilveira.todolist.android.features.auth.data.model.TokenType
+import org.jgsilveira.todolist.android.features.auth.domain.model.AuthTokens
+import org.jgsilveira.todolist.android.features.auth.domain.model.TokenType
 
 private const val ACCESS_TOKEN_KEY = "access_token"
 private const val REFRESH_TOKEN_KEY = "refresh_token"

@@ -1,4 +1,4 @@
-package org.jgsilveira.todolist.android.features.auth.data.model
+package org.jgsilveira.todolist.android.features.auth.domain.model
 
 enum class TokenType(val value: String) {
     BEARER(value = "Bearer")

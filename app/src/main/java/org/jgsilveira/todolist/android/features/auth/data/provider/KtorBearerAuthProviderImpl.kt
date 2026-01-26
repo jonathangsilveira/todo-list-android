@@ -7,8 +7,8 @@ import io.ktor.client.request.post
 import io.ktor.http.appendPathSegments
 import org.jgsilveira.todolist.android.core.network.ktor.KtorBearerAuthProvider
 import org.jgsilveira.todolist.android.features.auth.data.model.AuthTokenResponse
-import org.jgsilveira.todolist.android.features.auth.data.model.AuthTokens
-import org.jgsilveira.todolist.android.features.auth.data.model.TokenType
+import org.jgsilveira.todolist.android.features.auth.domain.model.AuthTokens
+import org.jgsilveira.todolist.android.features.auth.domain.model.TokenType
 import org.jgsilveira.todolist.android.features.auth.data.model.toBearerTokens
 
 internal class KtorBearerAuthProviderImpl(

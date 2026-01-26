@@ -1,4 +1,4 @@
-package org.jgsilveira.todolist.android.features.auth.repository
+package org.jgsilveira.todolist.android.features.auth.data.repository
 
 import org.jgsilveira.todolist.android.features.auth.domain.model.AuthTokens
 import org.jgsilveira.todolist.android.features.auth.domain.model.TokenType

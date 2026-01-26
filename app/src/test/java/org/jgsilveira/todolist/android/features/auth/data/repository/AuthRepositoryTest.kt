@@ -1,4 +1,4 @@
-package org.jgsilveira.todolist.android.features.auth.repository
+package org.jgsilveira.todolist.android.features.auth.data.repository
 
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -14,7 +14,6 @@ import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.jgsilveira.todolist.android.features.auth.data.client.AuthClient
 import org.jgsilveira.todolist.android.features.auth.data.provider.AuthTokensStore
-import org.jgsilveira.todolist.android.features.auth.data.repository.AuthRepositoryImpl
 import org.junit.After
 import org.junit.Before
 import org.junit.Test

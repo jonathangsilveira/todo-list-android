@@ -1,4 +1,4 @@
-package org.jgsilveira.todolist.android.features.auth.client
+package org.jgsilveira.todolist.android.features.auth.data.client
 
 import io.ktor.client.plugins.ClientRequestException
 import io.ktor.http.HttpStatusCode
@@ -12,7 +12,6 @@ import kotlinx.coroutines.test.setMain
 import org.jgsilveira.todolist.android.features.auth.data.model.AuthTokenResponse
 import org.jgsilveira.todolist.android.features.auth.data.model.MessageResponse
 import org.jgsilveira.todolist.android.features.auth.domain.model.TokenType
-import org.jgsilveira.todolist.android.features.auth.data.client.KtorAuthClient
 import org.jgsilveira.todolist.android.features.auth.domain.model.SignInForm
 import org.jgsilveira.todolist.android.features.auth.domain.model.SignUpForm
 import org.jgsilveira.todolist.android.ktor.mock.mockEngineRespondingJson

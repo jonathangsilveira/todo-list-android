@@ -9,6 +9,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.TestCoroutineScheduler
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
@@ -29,7 +30,7 @@ internal class UpdateItemUseCaseTest {
 
     private val updateItemUseCase = UpdateItemUseCase(
         localTodoListRepository = localTodoListRepositoryMock,
-        coroutineDispatcher = Dispatchers.Unconfined
+        coroutineDispatcher = UnconfinedTestDispatcher()
     )
 
     @Before

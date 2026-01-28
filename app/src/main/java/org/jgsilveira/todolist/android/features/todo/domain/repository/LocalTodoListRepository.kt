@@ -1,5 +1,6 @@
 package org.jgsilveira.todolist.android.features.todo.domain.repository
 
+import kotlinx.coroutines.flow.Flow
 import org.jgsilveira.todolist.android.features.todo.domain.model.TodoListItem
 
 interface LocalTodoListRepository {
@@ -7,4 +8,5 @@ interface LocalTodoListRepository {
     suspend fun updateItem(item: TodoListItem)
     suspend fun removeItemByUuid(uuid: String)
     suspend fun getActiveItems(): List<TodoListItem>
+    fun flowActiveItems(): Flow<List<TodoListItem>>
 }

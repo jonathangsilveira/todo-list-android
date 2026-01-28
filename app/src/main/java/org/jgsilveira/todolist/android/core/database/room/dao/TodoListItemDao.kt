@@ -11,7 +11,7 @@ import org.jgsilveira.todolist.android.core.database.room.entity.TodoListItemEnt
 @Dao
 abstract class TodoListItemDao {
     @Query("SELECT * FROM todo_list_item ORDER BY status IN (:statuses) ASC, created_at ASC")
-    abstract suspend fun getActiveItems(statuses: List<String>): List<TodoListItemEntity>
+    abstract suspend fun getItemsByStatus(statuses: List<String>): List<TodoListItemEntity>
 
     @Insert
     abstract suspend fun addItem(item: TodoListItemEntity)
@@ -23,5 +23,5 @@ abstract class TodoListItemDao {
     abstract suspend fun deleteItemByUuid(vararg uuid: String)
 
     @Query("SELECT * FROM todo_list_item ORDER BY status IN (:statuses) ASC, created_at ASC")
-    abstract fun flowActiveItems(statuses: List<String>): Flow<List<TodoListItemEntity>>
+    abstract fun flowItemsByStatus(statuses: List<String>): Flow<List<TodoListItemEntity>>
 }

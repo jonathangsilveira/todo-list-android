@@ -3,26 +3,20 @@ package org.jgsilveira.todolist.android.features.todo.domain
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.StandardTestDispatcher
-import kotlinx.coroutines.test.TestCoroutineScheduler
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
-import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
-import kotlinx.coroutines.test.setMain
+import org.jgsilveira.todolist.android.coroutines.rules.MainDispatcherRule
 import org.jgsilveira.todolist.android.features.todo.domain.repository.LocalTodoListRepository
 import org.jgsilveira.todolist.android.features.todo.domain.usecase.GetActiveItemsUseCase
-import org.junit.After
-import org.junit.Before
+import org.junit.Rule
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class GetActiveItemsUseCaseTest {
-    private val testDispatcher = StandardTestDispatcher(
-        scheduler = TestCoroutineScheduler()
-    )
+    @get:Rule
+    private val mainDispatcherRule = MainDispatcherRule()
 
     private val localTodoListRepositoryMock = mockk<LocalTodoListRepository>()
 
@@ -30,16 +24,6 @@ class GetActiveItemsUseCaseTest {
         localTodoListRepository = localTodoListRepositoryMock,
         coroutineDispatcher = UnconfinedTestDispatcher()
     )
-
-    @Before
-    fun setup() {
-        Dispatchers.setMain(testDispatcher)
-    }
-
-    @After
-    fun tearDown() {
-        Dispatchers.resetMain()
-    }
 
     @Test
     fun `invoke Should return non empty list When repository succeeds`() = runTest {

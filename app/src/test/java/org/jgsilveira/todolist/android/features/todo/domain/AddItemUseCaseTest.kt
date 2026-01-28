@@ -13,18 +13,19 @@ import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
+import org.jgsilveira.todolist.android.coroutines.rules.MainDispatcherRule
 import org.jgsilveira.todolist.android.features.todo.domain.repository.LocalTodoListRepository
 import org.jgsilveira.todolist.android.features.todo.domain.usecase.AddItemUseCase
 import org.junit.After
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 import kotlin.test.assertEquals
 
 @OptIn(ExperimentalCoroutinesApi::class)
 internal class AddItemUseCaseTest {
-    private val testDispatcher = StandardTestDispatcher(
-        scheduler = TestCoroutineScheduler()
-    )
+    @get:Rule
+    private val mainDispatcherRule = MainDispatcherRule()
 
     private val localTodoListRepositoryMock = mockk<LocalTodoListRepository>()
 
@@ -32,16 +33,6 @@ internal class AddItemUseCaseTest {
         localTodoListRepository = localTodoListRepositoryMock,
         coroutineDispatcher = UnconfinedTestDispatcher()
     )
-
-    @Before
-    fun setup() {
-        Dispatchers.setMain(testDispatcher)
-    }
-
-    @After
-    fun tearDown() {
-        Dispatchers.resetMain()
-    }
 
     @Test
     fun `invoke Should return Success When repository succeeds`() = runTest {
@@ -74,7 +65,7 @@ internal class AddItemUseCaseTest {
 
         // Then
         assert(result.isFailure)
-        assertEquals(result.exceptionOrNull()?.message, "something went wrong")
+        assertEquals("something went wrong", result.exceptionOrNull()?.message)
         coVerify {
             localTodoListRepositoryMock.addItem(item)
         }

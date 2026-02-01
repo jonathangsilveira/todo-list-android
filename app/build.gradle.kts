@@ -88,6 +88,9 @@ dependencies {
     implementation(libs.room.ktx)
     ksp(libs.room.compiler)
 
+    // WorkManager
+    implementation(libs.work.runtime.ktx)
+
     // Unit Tests
     testImplementation(libs.junit)
     testImplementation(libs.junit.jupiter)

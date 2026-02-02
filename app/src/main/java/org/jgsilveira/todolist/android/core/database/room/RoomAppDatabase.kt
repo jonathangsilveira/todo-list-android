@@ -4,12 +4,21 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import org.jgsilveira.todolist.android.core.database.room.dao.RemoteSyncRequestDao
 import org.jgsilveira.todolist.android.core.database.room.dao.TodoListItemDao
+import org.jgsilveira.todolist.android.core.database.room.entity.RemoteSyncRequestEntity
 import org.jgsilveira.todolist.android.core.database.room.entity.TodoListItemEntity
 
-@Database(entities = [TodoListItemEntity::class], version = 1)
+@Database(
+    version = 1,
+    entities = [
+        TodoListItemEntity::class,
+        RemoteSyncRequestEntity::class
+    ]
+)
 abstract class RoomAppDatabase : RoomDatabase() {
     abstract fun todoListItemDao(): TodoListItemDao
+    abstract fun remoteSyncRequestDao(): RemoteSyncRequestDao
 
     companion object {
         fun from(appContext: Context, databaseName: String): RoomAppDatabase {

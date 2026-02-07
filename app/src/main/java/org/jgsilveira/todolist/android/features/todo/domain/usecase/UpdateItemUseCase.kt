@@ -4,10 +4,12 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.jgsilveira.todolist.android.features.todo.domain.model.TodoListItem
+import org.jgsilveira.todolist.android.features.todo.domain.model.TodoListRemoteSyncType
 import org.jgsilveira.todolist.android.features.todo.domain.repository.LocalTodoListRepository
 
-class UpdateItemUseCase(
+class UpdateItemUseCase internal constructor(
     private val localTodoListRepository: LocalTodoListRepository,
+    private val enqueueItemChangesRequest: EnqueueItemChangesRemoteSyncRequestUseCase,
     private val coroutineDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) {
 
@@ -15,6 +17,10 @@ class UpdateItemUseCase(
         return runCatching {
             withContext(coroutineDispatcher) {
                 localTodoListRepository.updateItem(item)
+                enqueueItemChangesRequest.invoke(
+                    item = item,
+                    remoteSyncType = TodoListRemoteSyncType.UPDATE_ITEM
+                )
             }
         }
     }

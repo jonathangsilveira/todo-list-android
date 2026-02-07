@@ -4,17 +4,23 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.jgsilveira.todolist.android.features.todo.domain.model.TodoListItem
+import org.jgsilveira.todolist.android.features.todo.domain.model.TodoListRemoteSyncType
 import org.jgsilveira.todolist.android.features.todo.domain.repository.LocalTodoListRepository
 
-class RemoveItemByUuidUseCase(
+class RemoveItemByUuidUseCase internal constructor(
     private val localTodoListRepository: LocalTodoListRepository,
+    private val enqueueItemChangesRequest: EnqueueItemChangesRemoteSyncRequestUseCase,
     private val coroutineDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) {
 
-    suspend operator fun invoke(uuid: String): Result<Unit> {
+    suspend operator fun invoke(item: TodoListItem): Result<Unit> {
         return runCatching {
             withContext(coroutineDispatcher) {
-                localTodoListRepository.removeItemByUuid(uuid)
+                localTodoListRepository.removeItemByUuid(item.uuid)
+                enqueueItemChangesRequest(
+                    item = item,
+                    remoteSyncType = TodoListRemoteSyncType.REMOVE_ITEM
+                )
             }
         }
     }

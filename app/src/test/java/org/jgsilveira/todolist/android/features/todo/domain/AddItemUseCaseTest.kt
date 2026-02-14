@@ -5,19 +5,14 @@ import io.mockk.coVerify
 import io.mockk.just
 import io.mockk.mockk
 import io.mockk.runs
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.StandardTestDispatcher
-import kotlinx.coroutines.test.TestCoroutineScheduler
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
-import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
-import kotlinx.coroutines.test.setMain
 import org.jgsilveira.todolist.android.coroutines.rules.MainDispatcherRule
+import org.jgsilveira.todolist.android.features.todo.domain.model.TodoListRemoteSyncType
 import org.jgsilveira.todolist.android.features.todo.domain.repository.LocalTodoListRepository
 import org.jgsilveira.todolist.android.features.todo.domain.usecase.AddItemUseCase
-import org.junit.After
-import org.junit.Before
+import org.jgsilveira.todolist.android.features.todo.domain.usecase.EnqueueItemChangesRemoteSyncRequestUseCase
 import org.junit.Rule
 import org.junit.Test
 import kotlin.test.assertEquals
@@ -29,18 +24,23 @@ internal class AddItemUseCaseTest {
 
     private val localTodoListRepositoryMock = mockk<LocalTodoListRepository>()
 
+    private val enqueueItemChangesRequestMock = mockk<EnqueueItemChangesRemoteSyncRequestUseCase>()
+
     private val addItemUseCase = AddItemUseCase(
         localTodoListRepository = localTodoListRepositoryMock,
+        enqueueItemChangesRequest = enqueueItemChangesRequestMock,
         coroutineDispatcher = UnconfinedTestDispatcher()
     )
 
     @Test
     fun `invoke Should return Success When repository succeeds`() = runTest {
         // Given
+        val remoteSyncType = TodoListRemoteSyncType.ADD_ITEM
         val item = TodoListItemStubs.pendingTodoListItem
         coEvery {
             localTodoListRepositoryMock.addItem(item)
         } just runs
+        coEvery { enqueueItemChangesRequestMock.invoke(item, remoteSyncType) } just runs
 
         // When
         val result = addItemUseCase(item)
@@ -49,6 +49,7 @@ internal class AddItemUseCaseTest {
         assert(result.isSuccess)
         coVerify {
             localTodoListRepositoryMock.addItem(item)
+            enqueueItemChangesRequestMock.invoke(item, remoteSyncType)
         }
     }
 

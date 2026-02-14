@@ -9,7 +9,9 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.jgsilveira.todolist.android.coroutines.rules.MainDispatcherRule
+import org.jgsilveira.todolist.android.features.todo.domain.model.TodoListRemoteSyncType
 import org.jgsilveira.todolist.android.features.todo.domain.repository.LocalTodoListRepository
+import org.jgsilveira.todolist.android.features.todo.domain.usecase.EnqueueItemChangesRemoteSyncRequestUseCase
 import org.jgsilveira.todolist.android.features.todo.domain.usecase.UpdateItemUseCase
 import org.junit.Rule
 import org.junit.Test
@@ -22,8 +24,11 @@ internal class UpdateItemUseCaseTest {
 
     private val localTodoListRepositoryMock = mockk<LocalTodoListRepository>()
 
+    private val enqueueItemChangesRequestMock = mockk<EnqueueItemChangesRemoteSyncRequestUseCase>()
+
     private val updateItemUseCase = UpdateItemUseCase(
         localTodoListRepository = localTodoListRepositoryMock,
+        enqueueItemChangesRequest = enqueueItemChangesRequestMock,
         coroutineDispatcher = UnconfinedTestDispatcher()
     )
 
@@ -31,8 +36,12 @@ internal class UpdateItemUseCaseTest {
     fun `invoke Should return Success When repository succeeds`() = runTest {
         // Given
         val item = TodoListItemStubs.doneTodoListItem
+        val remoteSyncType = TodoListRemoteSyncType.UPDATE_ITEM
         coEvery {
             localTodoListRepositoryMock.updateItem(item)
+        } just runs
+        coEvery {
+            enqueueItemChangesRequestMock.invoke(item, remoteSyncType)
         } just runs
 
         // When
@@ -42,6 +51,7 @@ internal class UpdateItemUseCaseTest {
         assert(result.isSuccess)
         coVerify {
             localTodoListRepositoryMock.updateItem(item)
+            enqueueItemChangesRequestMock.invoke(item, remoteSyncType)
         }
     }
 

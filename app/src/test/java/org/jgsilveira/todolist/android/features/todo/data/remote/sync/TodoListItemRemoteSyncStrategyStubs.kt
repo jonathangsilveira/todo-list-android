@@ -23,4 +23,19 @@ internal object TodoListItemRemoteSyncStrategyStubs {
         updatedAt = null,
         lastSyncAt = 1L
     )
+
+    val updateItemBody = addItemBody.copy(
+        title = "Task",
+        updatedAt = 2L,
+        lastSyncAt = 3L
+    )
+
+    val updateItemResponse = RemoteTodoListItem(
+        uuid = "uuid",
+        title = "Task",
+        status = TodoListItemStatus.PENDING.name,
+        createdAt = 0L,
+        updatedAt = 2L,
+        lastSyncAt = 3L
+    )
 }

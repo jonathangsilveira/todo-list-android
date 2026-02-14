@@ -12,8 +12,9 @@ class UpdateTodoListItemRemoteSyncStrategy internal constructor(
     private val decoder: TodoListItemDecoder
 ): RemoteSyncStrategy {
     override suspend fun sync(entityId: String, payload: String?) {
-        val payload = payload
-            ?: throw Exception("Payload to $entityId must not be null to add TODO list items remotely")
+        val payload = payload ?: throw IllegalArgumentException(
+            "Payload to $entityId must not be null to update TODO list items remotely"
+        )
         val requestBody = decoder.decode(payload)
         val response = todoListClient.updateItem(requestBody)
         val updatedItem = response.toDomain()

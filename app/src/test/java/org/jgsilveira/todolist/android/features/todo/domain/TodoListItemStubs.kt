@@ -2,7 +2,6 @@ package org.jgsilveira.todolist.android.features.todo.domain
 
 import org.jgsilveira.todolist.android.features.todo.domain.model.TodoListItem
 import org.jgsilveira.todolist.android.features.todo.domain.model.TodoListItemStatus
-import java.util.Date
 
 internal object TodoListItemStubs {
 
@@ -11,7 +10,7 @@ internal object TodoListItemStubs {
         title = "Water the plants",
         status = TodoListItemStatus.PENDING,
         isSynced = false,
-        createdAt = Date(),
+        createdAt = 0L,
         updatedAt = null,
         lastSyncAt = null
     )
@@ -21,8 +20,8 @@ internal object TodoListItemStubs {
         title = "Water the plants",
         status = TodoListItemStatus.DONE,
         isSynced = false,
-        createdAt = Date(),
-        updatedAt = Date(),
+        createdAt = 0L,
+        updatedAt = 0L,
         lastSyncAt = null
     )
 

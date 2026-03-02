@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">TODO List App</string>
+    <string name="generic_error_message">Something went wrong. Please try again later</string>
+    <string name="title_todo_list">TO-DO List</string>
+    <string name="add_item">Add item</string>
+    <string name="remove_item">Remove item</string>
 </resources>

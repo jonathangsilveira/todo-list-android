@@ -57,12 +57,18 @@ dependencies {
     implementation(libs.androidx.compose.ui.graphics)
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
+    implementation(libs.androidx.compose.material3.icons.core)
+    implementation(libs.androidx.compose.material3.icons.extended)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
+
+    // Nav3
+    implementation(libs.nav3.runtime)
+    implementation(libs.nav3.ui)
 
     // Serialization
     implementation(libs.kotlinx.serialization.json)
@@ -99,4 +105,5 @@ dependencies {
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.mockk)
     testImplementation(libs.room.testing)
+    testImplementation(libs.turbine)
 }

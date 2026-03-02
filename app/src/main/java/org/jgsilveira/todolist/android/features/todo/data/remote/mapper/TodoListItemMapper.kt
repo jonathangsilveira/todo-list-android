@@ -4,16 +4,15 @@ import org.jgsilveira.todolist.android.features.todo.data.remote.model.RemoteTod
 import org.jgsilveira.todolist.android.features.todo.data.remote.model.TodoListItemBody
 import org.jgsilveira.todolist.android.features.todo.domain.model.TodoListItem
 import org.jgsilveira.todolist.android.features.todo.domain.model.TodoListItemStatus
-import java.util.Date
 
 internal fun TodoListItem.toBody(): TodoListItemBody {
     return TodoListItemBody(
         uuid = uuid,
         title = title,
         status = status.name,
-        createdAt = createdAt.time,
-        updatedAt = updatedAt?.time,
-        lastSyncAt = lastSyncAt?.time
+        createdAt = createdAt,
+        updatedAt = updatedAt,
+        lastSyncAt = lastSyncAt
     )
 }
 
@@ -22,9 +21,9 @@ internal fun RemoteTodoListItem.toDomain(): TodoListItem {
         uuid = uuid.orEmpty(),
         title = title.orEmpty(),
         status = TodoListItemStatus.valueOf(status.orEmpty()),
-        createdAt = Date(createdAt ?: 0L),
-        updatedAt = updatedAt?.let { Date(it) },
-        lastSyncAt = lastSyncAt?.let { Date(it) },
+        createdAt = createdAt ?: 0L,
+        updatedAt = updatedAt,
+        lastSyncAt = lastSyncAt,
         isSynced = true
     )
 }

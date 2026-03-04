@@ -33,12 +33,4 @@ internal class PreferencesStore(
             preferences.remove(prefKey)
         }
     }
-
-    override suspend fun keys(): Set<String> {
-        return setOf()
-    }
-
-    override suspend fun values(): List<String?> {
-        return listOf()
-    }
 }
